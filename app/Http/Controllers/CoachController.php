@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Athlete;
 use App\Models\Coach;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CoachController extends Controller
 {
@@ -12,15 +15,20 @@ class CoachController extends Controller
      */
     public function index()
     {
-        //
+        $coach = Coach::where('user_id', Auth::user()->id)->first();
+        $athletes = Athlete::where('coach_id', $coach->id)->get();
+        return view('usertype.coach_landing', compact('athletes'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public static function create(User $user)
     {
-        //
+        $coach = new Coach();
+        $coach->name = $user->name;
+        $coach->user_id = $user->id;
+        $coach->save();
     }
 
     /**

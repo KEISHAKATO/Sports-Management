@@ -28,7 +28,22 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        return $this->get_user_path();
         return redirect()->intended(route('dashboard', absolute: false));
+    }
+
+    public function get_user_path() {
+        $user_type = Auth::user()->user_type;
+        
+        if ($user_type == "coach") {
+            return redirect('/coach_landing');
+        }
+        if ($user_type == "athlete") {
+            return redirect('/athlete_landing');
+        }
+        if ($user_type == "guardian") {
+            return redirect('/guardian_landing');
+        }
     }
 
     /**

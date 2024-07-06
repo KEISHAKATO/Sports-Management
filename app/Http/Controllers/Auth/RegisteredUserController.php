@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\AthleteController;
+use App\Http\Controllers\CoachController;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\GuardianController;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -43,9 +46,30 @@ class RegisteredUserController extends Controller
         ]);
 
         event(new Registered($user));
+        
+        if ($user->user_type == "athlete") {
+            AthleteController::create($user);
+        } else if ($user->user_type == "coach") {
+            CoachController::create($user);
+        } else if ($user->user_type == "guardian") {
+            GuardianController::create($user);
+        }
+        
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        $user_type = Auth::user()->user_type;
+        
+        if ($user_type == "coach") {
+            return redirect('/coach_landing');
+        }
+        if ($user_type == "athlete") {
+            return redirect('/athlete_landing');
+        }
+        if ($user_type == "guardian") {
+            return redirect('/guardian_landing');
+        }
+
+        // return redirect(route('dashboard', absolute: false));
     }
 }

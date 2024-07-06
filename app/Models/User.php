@@ -45,4 +45,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function athlete()
+    {
+        return $this->hasOne(Athlete::class);
+    }
+
 }
