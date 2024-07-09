@@ -2,7 +2,6 @@
     $athlete = Auth::user()->athlete;
 @endphp
 
-<!-- resources/views/athlete.blade.php -->
 <!DOCTYPE html>
 <html lang="en">
 <head>

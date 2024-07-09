@@ -46,6 +46,7 @@ class User extends Authenticatable
         ];
     }
 
+    // athlete relationship
     public function athlete()
     {
         return $this->hasOne(Athlete::class);
